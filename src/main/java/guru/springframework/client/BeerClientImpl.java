@@ -8,7 +8,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
-import java.util.concurrent.Flow;
 
 /**
  * Created by jt, Spring Framework Guru.
@@ -54,7 +53,7 @@ public class BeerClientImpl implements BeerClient {
     }
 
     @Override
-    public Mono<BeerDTO> createBeer(BeerDTO beerDTO) {
+    public Mono<String> createBeer(BeerDTO beerDTO) {
         return webClient.post()
                 .uri(BEER_PATH)
                 .body(Mono.just(beerDTO), BeerDTO.class)
@@ -62,8 +61,7 @@ public class BeerClientImpl implements BeerClient {
                 .toBodilessEntity()
                 .flatMap(voidResponseEntity -> Mono.just(voidResponseEntity
                         .getHeaders().get("Location").get(0)))
-                .map(path -> path.split("/")[path.split("/").length -1])
-                .flatMap(this::getBeerById);
+                .map(path -> path.split("/")[path.split("/").length -1]);
     }
 
     @Override

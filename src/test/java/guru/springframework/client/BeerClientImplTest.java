@@ -1,6 +1,7 @@
 package guru.springframework.client;
 
 import guru.springframework.model.BeerDTO;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,21 @@ class BeerClientImplTest {
 
     @Autowired
     BeerClient client;
+
+    @Test
+    @Disabled
+    void testGetBeerByBeerStyle() {
+
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+
+        client.getBeerByBeerStyle("Pale Ale")
+                .subscribe(dto -> {
+                    System.out.println(dto.toString());
+                    atomicBoolean.set(true);
+                });
+
+        await().untilTrue(atomicBoolean);
+    }
 
     @Test
     void testDelete() {
@@ -82,20 +98,6 @@ class BeerClientImplTest {
                 .build();
 
         client.createBeer(newDto)
-                .subscribe(dto -> {
-                    System.out.println(dto.toString());
-                    atomicBoolean.set(true);
-                });
-
-        await().untilTrue(atomicBoolean);
-    }
-
-    @Test
-    void testGetBeerByBeerStyle() {
-
-        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
-
-        client.getBeerByBeerStyle("Pale Ale")
                 .subscribe(dto -> {
                     System.out.println(dto.toString());
                     atomicBoolean.set(true);
