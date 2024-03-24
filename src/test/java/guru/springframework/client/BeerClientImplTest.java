@@ -19,7 +19,6 @@ class BeerClientImplTest {
     BeerClient client;
 
     @Test
-    @Disabled
     void testGetBeerByBeerStyle() {
 
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
